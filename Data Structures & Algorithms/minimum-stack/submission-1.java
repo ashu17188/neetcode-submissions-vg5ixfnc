@@ -1,23 +1,35 @@
-class Solution {
-public boolean isValid(String s) {
-    Map<Character, Character> closeToOpen = new HashMap<>();
-    Stack<Character> stack = new Stack<>();
-    closeToOpen.put(')', '(');
-    closeToOpen.put('}', '{');
-    closeToOpen.put(']', '[');
+class MinStack {
+    private Stack<Integer> stack;
+    private Stack<Integer> minStack;
 
-    for (char c : s.toCharArray()) {
-      if (closeToOpen.containsKey(c)) {
-        if (!stack.isEmpty() && stack.peek() == closeToOpen.get(c)) {
-          stack.pop();
-        } else {
-          return false;
-        }
-      }else{
-        stack.push(c);
-      }
-
+    public MinStack() {
+        stack = new Stack<>();
+        minStack = new Stack<>();
     }
-    return stack.isEmpty();
-  }
+    
+    public void push(int val) {
+        stack.push(val);
+        if(minStack.isEmpty()){
+            minStack.push(val);
+        }else if(minStack.peek()>= val){
+            minStack.push(val);
+        }
+    }
+    
+    public void pop() {
+        if(!stack.isEmpty()){
+            int val = stack.pop();
+            if(!minStack.isEmpty() && minStack.peek()== val){
+                minStack.pop();
+            }
+        }
+    }
+    
+    public int top() {
+        return stack.peek();
+    }
+    
+    public int getMin() {
+        return minStack.isEmpty()? 0: minStack.peek();
+    }
 }
